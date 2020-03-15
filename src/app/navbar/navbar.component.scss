@@ -1,0 +1,31 @@
+@import "abstracts/variables";
+@import "base/typography";
+
+.menu{
+  border-bottom: 1px solid $light_gray;
+  font-size: 19px;
+}
+
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-bottom: 1px solid $light_gray;
+}
+
+.menu li {
+  color: $black_gray;
+  margin-top:95px;
+  padding-bottom:25px;
+  width:50%;
+  float: left;
+  text-align: center;
+  font-weight: lighter;
+}
+
+.menu .active{
+  border-bottom: 10px solid $blue;
+  font-weight: bold;
+  color: $blue;
+}

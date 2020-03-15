@@ -1,0 +1,14 @@
+@import "abstracts/variables";
+
+*{
+  font-family: Helvetica, Arial;
+}
+
+.container-body{
+  width: 64%;
+  left: 18%;
+  top: 10%;
+  height: 87%;
+  position:absolute;
+  border: 1px solid $light_gray;
+}
