@@ -1,26 +1,27 @@
 <div class="container-exchange">
   <h1>Realizar cambio</h1>
   <h2>Selecione las monedas</h2>
-  <form>
-    <div class="form-input">
+  <form #formCryptocurrency>
+    <div class="form-input" #amountCryptocurrency>
       <label for="amount-cryptocurrency">$</label>
       <input id="amount-cryptocurrency" type="number">
     </div>
-    <div class="form-input">
-      <span class="arrow"><img class="manImg" src="./src/assets/img/down-arrow.png"></span>
+    <div class="form-input" #typeCryptocurrency>
+      <span class="down-arrow"><img class="img-down-arrow" src="./src/assets/img/down-arrow.png"></span>
       <select name="" id="type-cryptocurrency">
         <option value="BTC">BTC</option>
       </select>
     </div>
-    <div class="form-input">
-      <span class="arrow"><img class="manImg" src="./src/assets/img/down-arrow.png"></span>
+    <div class="form-input" #typeCurrency>
+      <span class="down-arrow"><img class="img-down-arrow" src="./src/assets/img/down-arrow.png"></span>
       <select name="" id="type-currency">
         <option value="USD">USD</option>
       </select>
     </div>
-    <div class="form-input">
+    <div class="form-input" #amountCurrency>
       <label for="amount-currency">$</label>
       <input id="amount-currency"  type="number">
     </div>
   </form>
+  <span class="exchange" #exchange (click)="exchangeCurrency($event)"><img class="img-exchange" src="./src/assets/img/exchange.png"></span>
 </div>
