@@ -4,7 +4,7 @@
   <form #formCryptocurrency>
     <div class="form-input" #amountCryptocurrency>
       <label for="amount-cryptocurrency">$</label>
-      <input id="amount-cryptocurrency" type="number">
+      <input id="amount-cryptocurrency" type="number" #inputAmountCryptocurrency>
     </div>
     <div class="form-input" #typeCryptocurrency>
       <span class="down-arrow"><img class="img-down-arrow" src="./src/assets/img/down-arrow.png"></span>
@@ -20,7 +20,7 @@
     </div>
     <div class="form-input" #amountCurrency>
       <label for="amount-currency">$</label>
-      <input id="amount-currency"  type="number">
+      <input id="amount-currency"  type="number" #inputAmountCurrency>
     </div>
   </form>
   <span class="exchange" #exchange (click)="exchangeCurrency($event)"><img class="img-exchange" src="./src/assets/img/exchange.png"></span>

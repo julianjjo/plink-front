@@ -8,4 +8,9 @@ import { Component } from '@angular/core';
 // TODO: Terminar de organizar el footer
 export class AppComponent {
   title = 'Exchange Cryptocurrencies';
+  selectedMenuItem = 'REALIZAR CAMBIO';
+
+  changeItemMenu($event: any) {
+    this.selectedMenuItem = $event;
+  }
 }

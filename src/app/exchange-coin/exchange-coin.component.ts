@@ -12,6 +12,8 @@ export class ExchangeCoinComponent implements OnInit {
   @ViewChild('typeCryptocurrency') typeCryptocurrency: ElementRef;
   @ViewChild('typeCurrency') typeCurrency: ElementRef;
   @ViewChild('amountCurrency') amountCurrency: ElementRef;
+  @ViewChild('inputAmountCryptocurrency') inputAmountCryptocurrency: ElementRef;
+  @ViewChild('inputAmountCurrency') inputAmountCurrency: ElementRef;
 
   constructor(private renderer: Renderer2) { }
 
@@ -23,10 +25,14 @@ export class ExchangeCoinComponent implements OnInit {
   }
 
   changeOrderElementsForm() {
-    if (this.formCryptocurrency.nativeElement.children[0] !== this.amountCurrency.nativeElement){
+    if (this.formCryptocurrency.nativeElement.children[0] !== this.amountCurrency.nativeElement) {
+      this.renderer.setProperty(this.inputAmountCurrency.nativeElement, 'value', this.inputAmountCryptocurrency.nativeElement.value);
+      this.renderer.setProperty(this.inputAmountCryptocurrency.nativeElement, 'value', null);
       this.currenciesElements();
       this.cryptocurrenciesElements();
     } else {
+      this.renderer.setProperty(this.inputAmountCryptocurrency.nativeElement, 'value', this.inputAmountCurrency.nativeElement.value);
+      this.renderer.setProperty(this.inputAmountCurrency.nativeElement, 'value', null);
       this.cryptocurrenciesElementsInvert();
       this.currenciesElementsInvert();
     }

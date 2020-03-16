@@ -1,8 +1,8 @@
 
 <div class="main-container">
   <div class="body-container">
-    <app-navbar></app-navbar>
-    <app-exchange-coin></app-exchange-coin>
+    <app-navbar (changeItemMenu)="changeItemMenu($event)"></app-navbar>
+    <app-exchange-coin *ngIf="selectedMenuItem === 'REALIZAR CAMBIO'"></app-exchange-coin>
+    <app-list-currencies *ngIf="selectedMenuItem === 'LISTADO DE MONEDAS'"></app-list-currencies>
   </div>
-  <footer class="footer"></footer>
 </div>
