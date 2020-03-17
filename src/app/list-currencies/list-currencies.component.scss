@@ -1,0 +1,73 @@
+@import "abstracts/variables";
+@import "abstracts/mixins";
+
+table{
+  margin-top: 60px;
+  position: relative;
+  width: 80%;
+  left: 10%;
+  color: $black_gray;
+  tbody{
+    tr{
+      border: 2px solid $light_gray;
+    }
+  }
+  th{
+    padding: 31px 0 31px 10px;
+    text-align: left;
+    border: none;
+  }
+  td{
+    padding: 20px 0 20px 10px;
+    font-size: 16px;
+    border: none;
+  }
+  thead{
+    tr{
+      -webkit-box-shadow: -2px 3px 5px 0px rgba(166,166,166,0.7);
+      -moz-box-shadow: -2px 3px 5px 0px rgba(166,166,166,0.7);
+      box-shadow: -2px 3px 5px 0px rgba(166,166,166,0.7);
+    }
+  }
+}
+
+.td-void{
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.tr-void{
+  padding-top: 0px;
+  border-left: hidden !important;
+}
+
+span.shuffle-arrows{
+  position: absolute;
+  img.img-shuffle-arrows{
+    padding-top: 10px;
+    width: 1.5vw;
+    height: 1.5vw;
+    transform: translate(1vw, -1.8vh);
+  }
+}
+
+.price{
+  color: $blue;
+  font-weight: bold;
+  font-size: 18px !important;
+}
+
+td.yes{
+  color: $green;
+  span.dot{
+    @include dot;
+    background-color: $green;
+  }
+}
+td.no{
+  color: $red;
+  span.dot{
+    @include dot;
+    background-color: $red;
+  }
+}
