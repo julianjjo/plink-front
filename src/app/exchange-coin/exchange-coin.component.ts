@@ -32,11 +32,11 @@ export class ExchangeCoinComponent implements OnInit {
   }
 
   loadSelectCryptocurrencies() {
-    return this.exchangeCoinService.getData() // add `return`
+    return this.exchangeCoinService.getCryptocurrencies() // add `return`
       .map(
         result => {
-          this.result = result;
-          for (const crytocurrency in this.dataCryptocurrencies) {
+          let dataCryptocurrencies = result;
+          for (const crytocurrency in dataCryptocurrencies) {
             console.log(crytocurrency);
           }
         });
