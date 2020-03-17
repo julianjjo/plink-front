@@ -1,4 +1,7 @@
 import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {ExchangeCoinService} from './exchange-coin.service';
+import { HttpClient } from '@angular/common/http';
+import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-exchange-coin',
@@ -6,6 +9,9 @@ import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core
   styleUrls: ['./exchange-coin.component.scss']
 })
 export class ExchangeCoinComponent implements OnInit {
+  dataCryptocurrencies = {};
+  http;
+
   @ViewChild('exchange') exchangeButton: ElementRef;
   @ViewChild('formCryptocurrency') formCryptocurrency: ElementRef;
   @ViewChild('amountCryptocurrency') amountCryptocurrency: ElementRef;
@@ -15,9 +21,25 @@ export class ExchangeCoinComponent implements OnInit {
   @ViewChild('inputAmountCryptocurrency') inputAmountCryptocurrency: ElementRef;
   @ViewChild('inputAmountCurrency') inputAmountCurrency: ElementRef;
 
-  constructor(private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2, private exchangeCoinService: ExchangeCoinService) {}
 
   ngOnInit() {
+    this.loadSelectCryptocurrencies()
+      .subscribe(function (data) {
+        this.dataCryptocurrencies = data['digital_currencies'];
+        this.loadSelectCryptocurrencies();
+      });
+  }
+
+  loadSelectCryptocurrencies() {
+    return this.exchangeCoinService.getData() // add `return`
+      .map(
+        result => {
+          this.result = result;
+          for (const crytocurrency in this.dataCryptocurrencies) {
+            console.log(crytocurrency);
+          }
+        });
   }
 
   exchangeCurrency($event: MouseEvent) {
