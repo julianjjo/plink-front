@@ -1,27 +1,27 @@
 <div class="container-exchange">
   <h1>Realizar cambio</h1>
   <h2>Selecione las monedas</h2>
-  <form #formCryptocurrency>
+  <span class="exchange" #exchange (click)="exchangeCurrency($event)"><img class="img-exchange" src="./src/assets/img/exchange.png"></span>
+  <form [formGroup]="exchangeFormGroup" #formCryptocurrency>
     <div class="form-input" #amountCryptocurrency>
       <label for="amount-cryptocurrency">$</label>
-      <input id="amount-cryptocurrency" type="number" #inputAmountCryptocurrency>
+      <input id="amount-cryptocurrency" type="number" (keyup)="onKeyCryptocurrency($event)" formControlName="inputAmountCryptocurrency" #inputAmountCryptocurrency>
     </div>
     <div class="form-input" #typeCryptocurrency>
       <span class="down-arrow"><img class="img-down-arrow" src="./src/assets/img/down-arrow.png"></span>
-      <select name="" id="type-cryptocurrency">
-        <option value="BTC">BTC</option>
+      <select name="" id="type-cryptocurrency" formControlName="selectTypeCryptocurrency" #selectTypeCryptocurrency>
+        <option  *ngFor="let cryptoCurrency of cryptoCurrencies" value="{{cryptoCurrency}}">{{cryptoCurrency}}</option>
       </select>
     </div>
     <div class="form-input" #typeCurrency>
       <span class="down-arrow"><img class="img-down-arrow" src="./src/assets/img/down-arrow.png"></span>
-      <select name="" id="type-currency">
-        <option value="USD">USD</option>
+      <select name="" id="type-currency" formControlName="selectTypeCurrency" #selectTypeCurrency>
+        <option  *ngFor="let currency of currencies" value="{{currency}}">{{currency}}</option>
       </select>
     </div>
     <div class="form-input" #amountCurrency>
       <label for="amount-currency">$</label>
-      <input id="amount-currency"  type="number" #inputAmountCurrency>
+      <input id="amount-currency"  type="number" formControlName="inputAmountCurrency" disabled #inputAmountCurrency>
     </div>
   </form>
-  <span class="exchange" #exchange (click)="exchangeCurrency($event)"><img class="img-exchange" src="./src/assets/img/exchange.png"></span>
 </div>

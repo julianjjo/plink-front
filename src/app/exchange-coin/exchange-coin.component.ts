@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ExchangeCoinService} from './exchange-coin.service';
-import { HttpClient } from '@angular/common/http';
-import {forEach} from '@angular/router/src/utils/collection';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-exchange-coin',
@@ -10,7 +9,10 @@ import {forEach} from '@angular/router/src/utils/collection';
 })
 export class ExchangeCoinComponent implements OnInit {
   dataCryptocurrencies = {};
-  http;
+  dataCurrencies = {};
+  cryptoCurrencies = new Array();
+  currencies = new Array();
+  public exchangeFormGroup: FormGroup;
 
   @ViewChild('exchange') exchangeButton: ElementRef;
   @ViewChild('formCryptocurrency') formCryptocurrency: ElementRef;
@@ -19,27 +21,56 @@ export class ExchangeCoinComponent implements OnInit {
   @ViewChild('typeCurrency') typeCurrency: ElementRef;
   @ViewChild('amountCurrency') amountCurrency: ElementRef;
   @ViewChild('inputAmountCryptocurrency') inputAmountCryptocurrency: ElementRef;
+  @ViewChild('selectTypeCryptocurrency') selectTypeCryptocurrency: ElementRef;
+  @ViewChild('selectTypeCurrency') selectTypeCurrency: ElementRef;
   @ViewChild('inputAmountCurrency') inputAmountCurrency: ElementRef;
 
-  constructor(private renderer: Renderer2, private exchangeCoinService: ExchangeCoinService) {}
+  constructor(private renderer: Renderer2, private exchangeCoinService: ExchangeCoinService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    this.loadSelectCryptocurrencies()
-      .subscribe(function (data) {
+    this.buildForm();
+    this.getCryptoCurrencies();
+    this.getCurrencies();
+  }
+
+  private buildForm() {
+    this.exchangeFormGroup = new FormGroup({
+      inputAmountCryptocurrency: new FormControl('', Validators.pattern('^(\\d|,)*\\d*$')),
+      selectTypeCryptocurrency: new FormControl('BTC'),
+      selectTypeCurrency: new FormControl('USD'),
+      inputAmountCurrency: new FormControl('')
+    });
+  }
+
+  private getCryptoCurrencies() {
+    this.exchangeCoinService.getCryptocurrencies()
+      .subscribe((data: any) => {
         this.dataCryptocurrencies = data['digital_currencies'];
-        this.loadSelectCryptocurrencies();
+        for (const cryptoCurrency in this.dataCryptocurrencies) {
+          if (this.dataCryptocurrencies.hasOwnProperty(cryptoCurrency)) {
+            this.cryptoCurrencies.push(Object.keys(this.dataCryptocurrencies[cryptoCurrency]));
+          }
+        }
       });
   }
 
-  loadSelectCryptocurrencies() {
-    return this.exchangeCoinService.getCryptocurrencies() // add `return`
-      .map(
-        result => {
-          let dataCryptocurrencies = result;
-          for (const crytocurrency in dataCryptocurrencies) {
-            console.log(crytocurrency);
+  private getCurrencies() {
+    this.exchangeCoinService.getCurrencies()
+      .subscribe((data: any) => {
+        this.dataCurrencies = data['fiat_currencies'];
+        for (const currency in this.dataCurrencies) {
+          if (this.dataCurrencies.hasOwnProperty(currency)) {
+            this.currencies.push(Object.keys(this.dataCurrencies[currency]));
           }
-        });
+        }
+      });
+  }
+
+  private exchangeCurrencies(amount, from, to, input) {
+    this.exchangeCoinService.exchangeCurrencies(amount, from, to)
+      .subscribe((data: any) => {
+        this.renderer.setProperty(input, 'value', data['to_quantity']);
+      });
   }
 
   exchangeCurrency($event: MouseEvent) {
@@ -48,35 +79,95 @@ export class ExchangeCoinComponent implements OnInit {
 
   changeOrderElementsForm() {
     if (this.formCryptocurrency.nativeElement.children[0] !== this.amountCurrency.nativeElement) {
-      this.renderer.setProperty(this.inputAmountCurrency.nativeElement, 'value', this.inputAmountCryptocurrency.nativeElement.value);
-      this.renderer.setProperty(this.inputAmountCryptocurrency.nativeElement, 'value', null);
-      this.currenciesElements();
-      this.cryptocurrenciesElements();
+      this.changeAmountCryptocurrency(
+        this.amountCurrency.nativeElement,
+        this.amountCryptocurrency.nativeElement,
+        this.inputAmountCurrency.nativeElement,
+        this.inputAmountCryptocurrency.nativeElement,
+        this.typeCurrency.nativeElement,
+        this.typeCryptocurrency.nativeElement,
+        this.selectTypeCurrency.nativeElement,
+        this.selectTypeCryptocurrency.nativeElement
+      );
     } else {
-      this.renderer.setProperty(this.inputAmountCryptocurrency.nativeElement, 'value', this.inputAmountCurrency.nativeElement.value);
-      this.renderer.setProperty(this.inputAmountCurrency.nativeElement, 'value', null);
-      this.cryptocurrenciesElementsInvert();
-      this.currenciesElementsInvert();
+      this.changeAmountCryptocurrency(
+        this.amountCryptocurrency.nativeElement,
+        this.amountCurrency.nativeElement,
+        this.inputAmountCryptocurrency.nativeElement,
+        this.inputAmountCurrency.nativeElement,
+        this.typeCryptocurrency.nativeElement,
+        this.typeCurrency.nativeElement,
+        this.selectTypeCryptocurrency.nativeElement,
+        this.selectTypeCurrency.nativeElement
+      );
     }
   }
 
-  currenciesElements() {
-    this.renderer.appendChild(this.formCryptocurrency.nativeElement, this.amountCurrency.nativeElement);
-    this.renderer.appendChild(this.formCryptocurrency.nativeElement, this.typeCurrency.nativeElement);
+  private changeAmountCryptocurrency(
+    firstAmountElement, secondAmountElement,
+    firstInputAmountElement, secondInputAmountElement,
+    firstTypeElement, secondTypeElement, firstSelectElement, secondSelectElement) {
+
+    this.renderElementsUp(
+      firstAmountElement,
+      firstTypeElement,
+      firstInputAmountElement,
+      secondInputAmountElement
+    );
+    this.renderElementsDown(
+      secondAmountElement,
+      secondTypeElement,
+      secondInputAmountElement
+    );
+    this.exchangeCurrencies(
+      firstInputAmountElement.value,
+      firstSelectElement.value,
+      secondSelectElement.value,
+      secondInputAmountElement
+    );
   }
 
-  currenciesElementsInvert() {
-    this.renderer.appendChild(this.formCryptocurrency.nativeElement, this.typeCurrency.nativeElement);
-    this.renderer.appendChild(this.formCryptocurrency.nativeElement, this.amountCurrency.nativeElement);
+  renderElementsUp(amount, type, input, beforeInput) {
+    this.renderer.appendChild(this.formCryptocurrency.nativeElement, amount);
+    this.renderer.appendChild(this.formCryptocurrency.nativeElement, type);
+    this.renderer.setProperty(input, 'value', beforeInput.value);
+    this.renderer.removeAttribute(input, 'disabled');
+    this.renderer.listen(input, 'keyup', (event) => {
+      this.onKeyCryptocurrency(event);
+    });
   }
 
-  cryptocurrenciesElements() {
-    this.renderer.appendChild(this.formCryptocurrency.nativeElement, this.typeCryptocurrency.nativeElement);
-    this.renderer.appendChild(this.formCryptocurrency.nativeElement, this.amountCryptocurrency.nativeElement);
+  renderElementsDown(amount, type, input) {
+    this.renderer.appendChild(this.formCryptocurrency.nativeElement, type);
+    this.renderer.appendChild(this.formCryptocurrency.nativeElement, amount);
+    this.renderer.setAttribute(input, 'disabled', 'true');
+    this.renderer.listen(input, 'keyup', (event) => {});
   }
 
-  cryptocurrenciesElementsInvert() {
-    this.renderer.appendChild(this.formCryptocurrency.nativeElement, this.amountCryptocurrency.nativeElement);
-    this.renderer.appendChild(this.formCryptocurrency.nativeElement, this.typeCryptocurrency.nativeElement);
+  onKeyCryptocurrency($event: KeyboardEvent) {
+    const amount = (event.target as HTMLInputElement).value;
+    console.log(Number(amount));
+    this.getExchangeForm(amount);
+  }
+
+  getExchangeForm(amount) {
+    if (this.formCryptocurrency.nativeElement.children[0] === this.amountCryptocurrency.nativeElement) {
+      if (Number(amount) === 0) {
+        this.renderer.setProperty(this.inputAmountCryptocurrency.nativeElement, 'value',  '');
+      }
+      this.exchangeCurrencies(
+        amount,
+        this.selectTypeCryptocurrency.nativeElement.value,
+        this.selectTypeCurrency.nativeElement.value,
+        this.inputAmountCurrency.nativeElement
+      );
+    } else {
+      this.exchangeCurrencies(
+        amount,
+        this.selectTypeCurrency.nativeElement.value,
+        this.selectTypeCryptocurrency.nativeElement.value,
+        this.inputAmountCryptocurrency.nativeElement
+      );
+    }
   }
 }
