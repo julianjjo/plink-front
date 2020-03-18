@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {ExchangeCoinService} from './exchange-coin.service';
+import {ExchangeCoinService} from '../../services/exchange-coin/exchange-coin.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({

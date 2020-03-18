@@ -1,20 +1,20 @@
 <div class="container-exchange">
   <h1>Realizar cambio</h1>
   <h2>Selecione las monedas</h2>
-  <span class="exchange" #exchange (click)="exchangeCurrency($event)"><img class="img-exchange" src="./src/assets/img/exchange.png"></span>
+  <span class="exchange" #exchange (click)="exchangeCurrency($event)"><img class="img-exchange" src="../../../assets/img/exchange.png"></span>
   <form [formGroup]="exchangeFormGroup" #formCryptocurrency>
     <div class="form-input" #amountCryptocurrency>
       <label for="amount-cryptocurrency">$</label>
       <input id="amount-cryptocurrency" type="number" (keyup)="onKeyCryptocurrency($event)" formControlName="inputAmountCryptocurrency" #inputAmountCryptocurrency>
     </div>
     <div class="form-input" #typeCryptocurrency>
-      <span class="down-arrow"><img class="img-down-arrow" src="./src/assets/img/down-arrow.png"></span>
+      <span class="down-arrow"><img class="img-down-arrow" src="../../../assets/img/down-arrow.png"></span>
       <select name="" id="type-cryptocurrency" formControlName="selectTypeCryptocurrency" #selectTypeCryptocurrency>
         <option  *ngFor="let cryptoCurrency of cryptoCurrencies" value="{{cryptoCurrency}}">{{cryptoCurrency}}</option>
       </select>
     </div>
     <div class="form-input" #typeCurrency>
-      <span class="down-arrow"><img class="img-down-arrow" src="./src/assets/img/down-arrow.png"></span>
+      <span class="down-arrow"><img class="img-down-arrow" src="../../../assets/img/down-arrow.png"></span>
       <select name="" id="type-currency" formControlName="selectTypeCurrency" #selectTypeCurrency>
         <option  *ngFor="let currency of currencies" value="{{currency}}">{{currency}}</option>
       </select>
