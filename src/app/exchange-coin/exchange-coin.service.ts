@@ -31,7 +31,6 @@ export class ExchangeCoinService {
   }
 
   exchangeCurrencies(amount, from, to) {
-    console.log(amount, ':', from, ':', to);
     return this.http.get(this.baseUrl + '/convert', {
       headers:  {
         'x-rapidapi-host': 'bravenewcoin-v1.p.rapidapi.com',

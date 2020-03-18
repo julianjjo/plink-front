@@ -146,7 +146,6 @@ export class ExchangeCoinComponent implements OnInit {
 
   onKeyCryptocurrency($event: KeyboardEvent) {
     const amount = (event.target as HTMLInputElement).value;
-    console.log(Number(amount));
     this.getExchangeForm(amount);
   }
 
