@@ -8,10 +8,10 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./exchange-coin.component.scss']
 })
 export class ExchangeCoinComponent implements OnInit {
-  dataCryptocurrencies = {};
-  dataCurrencies = {};
-  cryptoCurrencies = new Array();
-  currencies = new Array();
+  dataCryptocurrencies;
+  dataCurrencies;
+  cryptoCurrencies: Array<Object>;
+  currencies: Array<Object>;
   public exchangeFormGroup: FormGroup;
 
   @ViewChild('exchange') exchangeButton: ElementRef;
@@ -25,7 +25,10 @@ export class ExchangeCoinComponent implements OnInit {
   @ViewChild('selectTypeCurrency') selectTypeCurrency: ElementRef;
   @ViewChild('inputAmountCurrency') inputAmountCurrency: ElementRef;
 
-  constructor(private renderer: Renderer2, private exchangeCoinService: ExchangeCoinService, private formBuilder: FormBuilder) {}
+  constructor(private renderer: Renderer2, private exchangeCoinService: ExchangeCoinService, private formBuilder: FormBuilder) {
+    this.cryptoCurrencies = new Array<Object>();
+    this.currencies = new Array<Object>();
+  }
 
   ngOnInit() {
     this.buildForm();

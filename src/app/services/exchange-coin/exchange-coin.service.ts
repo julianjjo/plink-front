@@ -12,7 +12,7 @@ export class ExchangeCoinService {
     this.baseUrl = environment.baseUrl;
   }
 
-  getCryptocurrencies(){
+  getCryptocurrencies() {
     return this.http.get(this.baseUrl + '/digital-currency-symbols', {
       headers:  {
         'x-rapidapi-host': 'bravenewcoin-v1.p.rapidapi.com',
